@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro de Colaboradores</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h2>Cadastro de Colaboradores</h2>
+    <form id="cadastroForm">
+      <label for="nome">Nome do Colaborador:</label>
+      <input type="text" id="nome" required />
+
+      <label for="chefe">Chefe:</label>
+      <select id="chefe">
+        <option value="">Nenhum</option>
+      </select>
+
+      <button type="button" onclick="cadastrarColaborador()">Cadastrar</button>
+    </form>
+
+    <h2>Lista de Colaboradores</h2>
+    <ul id="colaboradores-lista"></ul>
+
+    <script>
+      function cadastrarColaborador() {
+        var nome = document.getElementById("nome").value;
+        var chefe = document.getElementById("chefe").value;
+
+        var colaborador = { nome: nome, chefe: chefe };
+
+        var colaboradores =
+          JSON.parse(localStorage.getItem("colaboradores")) || [];
+        colaboradores.push(colaborador);
+
+        localStorage.setItem("colaboradores", JSON.stringify(colaboradores));
+
+        document.getElementById("nome").value = "";
+        document.getElementById("chefe").selectedIndex = 0;
+
+        atualizarListaColaboradores();
+      }
+
+      function atualizarListaColaboradores() {
+        var lista = document.getElementById("colaboradores-lista");
+        lista.innerHTML = "";
+
+        var colaboradores =
+          JSON.parse(localStorage.getItem("colaboradores")) || [];
+        colaboradores.forEach(function (colaborador) {
+          var listItem = document.createElement("li");
+          listItem.textContent =
+            "Nome: " + colaborador.nome + ", Chefe: " + colaborador.chefe;
+          lista.appendChild(listItem);
+        });
+
+        // Atualizar a lista de chefes no formulário
+        var selectChefe = document.getElementById("chefe");
+        selectChefe.innerHTML = '<option value="">Nenhum</option>';
+        colaboradores.forEach(function (colaborador) {
+          selectChefe.innerHTML +=
+            '<option value="' +
+            colaborador.nome +
+            '">' +
+            colaborador.nome +
+            "</option>";
+        });
+      }
+
+      window.onload = atualizarListaColaboradores;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista de Colaboradores</title>
+  </head>
+  <body>
+    <h2>Lista de Colaboradores</h2>
+    <ul id="colaboradores-lista"></ul>
+    <script>
+      // Recuperar os dados do localStorage
+      var colaboradores = JSON.parse(localStorage.getItem("colaboradores"));
+
+      // Exibir os colaboradores na lista
+      var lista = document.getElementById("colaboradores-lista");
+      if (colaboradores && colaboradores.length > 0) {
+        colaboradores.forEach(function (colaborador) {
+          var listItem = document.createElement("li");
+          listItem.textContent =
+            "Nome: " + colaborador.nome + ", Chefe: " + colaborador.chefe;
+          lista.appendChild(listItem);
+        });
+      } else {
+        var listItem = document.createElement("li");
+        listItem.textContent = "Nenhum colaborador cadastrado.";
+        lista.appendChild(listItem);
+      }
+    </script>
+  </body>
+</html>
